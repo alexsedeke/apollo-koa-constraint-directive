@@ -1,16 +1,24 @@
 const { createTestClient } = require('apollo-server-testing');
-const gql = require('graphql-tag');
+const { gql } = require('apollo-server-koa');
 const { constructTestServer } = require('./__setup');
+
+const formatError = (error) => {
+  const { message, code, fieldName, context } = error.originalError
+  return { message, code, fieldName, context }
+}
+
 const SET_BOOK = gql`mutation createBook($input: BookInput) {
   createBook(input: $input) {
     title
   }
 }`
+
 const GET_BOOK = gql`query {
   books {
     title
   }
 }`
+
 const resolvers = function (data) {
   return {
     Query: {
@@ -20,6 +28,7 @@ const resolvers = function (data) {
     }
   }
 }
+
 // INPUT_FIELD_DEFINITION
 describe('INPUT_FIELD_DEFINITION String validate @constraint #minLength', () => {
   const typeDefs = gql`
@@ -39,14 +48,21 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #minLength', () => 
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'he💩' } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
+    const { query } = createTestClient(server);
+    const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'a💩' } } });
+    expect(res).toMatchSnapshot();
+  });
+
+  it('should throw custom error', async () => {
+    const { server } = constructTestServer({ typeDefs, formatError });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'a💩' } } });
     expect(res).toMatchSnapshot();
@@ -71,14 +87,21 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #maxLength', () => 
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'a💩' } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
+    const { query } = createTestClient(server);
+    const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'fail💩' } } });
+    expect(res).toMatchSnapshot();
+  });
+
+  it('should throw custom error', async () => {
+    const { server } = constructTestServer({ typeDefs, formatError });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'fail💩' } } });
     expect(res).toMatchSnapshot();
@@ -103,14 +126,14 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #startsWith', () =>
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: '💩 yes' } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'no 💩' } } });
     expect(res).toMatchSnapshot();
@@ -135,14 +158,14 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #endsWith', () => {
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'yes 💩' } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: '💩 no' } } });
     expect(res).toMatchSnapshot();
@@ -167,14 +190,14 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #contains', () => {
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'It contains 💩 the sign' } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'Oh no' } } });
     expect(res).toMatchSnapshot();
@@ -199,14 +222,14 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #notContains', () =
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'It do not contains the sign' } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'It contains 💩 the sign' } } });
     expect(res).toMatchSnapshot();
@@ -231,14 +254,14 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #pattern', () => {
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'afoo' } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: '£££' } } });
     expect(res).toMatchSnapshot();
@@ -263,14 +286,14 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #format #byte', () 
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'afoo' } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: '£££' } } });
     expect(res).toMatchSnapshot();
@@ -295,14 +318,14 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #format #date-time'
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: '2018-05-16 12:57:00Z' } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'no time' } } });
     expect(res).toMatchSnapshot();
@@ -327,14 +350,14 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #format #date', () 
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: '2018-05-16' } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'too late' } } });
     expect(res).toMatchSnapshot();
@@ -359,14 +382,14 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #format #email', ()
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'test@test.com' } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'null' } } });
     expect(res).toMatchSnapshot();
@@ -391,14 +414,14 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #format #ipv4', () 
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: '127.0.0.1' } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'null' } } });
     expect(res).toMatchSnapshot();
@@ -423,14 +446,14 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #format #ipv6', () 
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: '2001:db8:0000:1:1:1:1:1' } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'null' } } });
     expect(res).toMatchSnapshot();
@@ -455,14 +478,14 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #format #uri', () =
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'foobar.com' } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'null' } } });
     expect(res).toMatchSnapshot();
@@ -487,14 +510,14 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #format #uuid', () 
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'A987FBC9-4BED-3078-CF07-9141BA07C9F3' } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'null' } } });
     expect(res).toMatchSnapshot();
@@ -519,7 +542,7 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #format #unknowm', 
   `;
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'a' } } });
     expect(res).toMatchSnapshot();
@@ -540,7 +563,7 @@ describe('FIELD_DEFINITION String validate @constraint #minLength', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 'foo' }, { title: 'foobar' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -548,7 +571,7 @@ describe('FIELD_DEFINITION String validate @constraint #minLength', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 'fo' }, { title: 'foo' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -568,7 +591,7 @@ describe('FIELD_DEFINITION String validate @constraint #maxLength', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 'fo' }, { title: 'foo' }, { title: 'bar' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -576,7 +599,7 @@ describe('FIELD_DEFINITION String validate @constraint #maxLength', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 'foo' }, { title: 'foobar' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -596,7 +619,7 @@ describe('FIELD_DEFINITION String validate @constraint #startsWith', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: '💩foo' }, { title: '💩bar' }, { title: '💩baz' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -604,7 +627,7 @@ describe('FIELD_DEFINITION String validate @constraint #startsWith', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: '💩foo' }, { title: '💩bar' }, { title: 'baz' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -624,7 +647,7 @@ describe('FIELD_DEFINITION String validate @constraint #endsWith', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 'foo💩' }, { title: 'bar💩' }, { title: 'baz💩' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -632,7 +655,7 @@ describe('FIELD_DEFINITION String validate @constraint #endsWith', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 'foo💩' }, { title: 'bar💩' }, { title: 'baz' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -652,7 +675,7 @@ describe('FIELD_DEFINITION String validate @constraint #contains', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 'foo💩' }, { title: 'bar💩' }, { title: 'baz💩' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -660,7 +683,7 @@ describe('FIELD_DEFINITION String validate @constraint #contains', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 'foo💩' }, { title: 'bar💩' }, { title: 'baz' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -680,7 +703,7 @@ describe('FIELD_DEFINITION String validate @constraint #notContains', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 'foo' }, { title: 'bar' }, { title: 'baz' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -688,7 +711,7 @@ describe('FIELD_DEFINITION String validate @constraint #notContains', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 'foo💩' }, { title: 'bar💩' }, { title: 'baz' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -708,7 +731,7 @@ describe('FIELD_DEFINITION String validate @constraint #pattern', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 'foo' }, { title: 'bar' }, { title: 'baz' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -716,7 +739,7 @@ describe('FIELD_DEFINITION String validate @constraint #pattern', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 'foo💩' }, { title: '£££' }, { title: 'baz' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -736,7 +759,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #byte', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 'afoo' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -744,7 +767,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #byte', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: '£££' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -764,7 +787,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #date-time', () =
 
   it('should pass', async () => {
     const mockData = [{ title: '2018-05-16T12:57:00Z' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -772,7 +795,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #date-time', () =
 
   it('should fail', async () => {
     const mockData = [{ title: '2018-05-1612:57:00Z' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -792,7 +815,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #date', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: '2018-05-16' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -800,7 +823,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #date', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 'no time' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -820,7 +843,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #email', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 'test@test.com' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -828,7 +851,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #email', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 'testtest.com' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -848,7 +871,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #ipv4', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: '127.0.0.1' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -856,7 +879,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #ipv4', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: '256.256.256.256' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -876,7 +899,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #ipv6', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: '2001:db8:0000:1:1:1:1:1' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -884,7 +907,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #ipv6', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: '256.256.256.256' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -904,7 +927,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #uri', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 'foobar.com' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -912,7 +935,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #uri', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 'nodomain' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -932,7 +955,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #uuid', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 'A987FBC9-4BED-3078-CF07-9141BA07C9F3' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -940,7 +963,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #uuid', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 'nouuid' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -960,7 +983,7 @@ describe('FIELD_DEFINITION String validate @constraint #format #unknown', () => 
 
   it('should fail', async () => {
     const mockData = [{ title: 'nouuid' }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()

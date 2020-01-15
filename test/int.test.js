@@ -39,14 +39,14 @@ describe('INPUT_FIELD_DEFINITION Int validate @constraint #min', () => {
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 3 } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 2 } } });
     expect(res).toMatchSnapshot();
@@ -71,14 +71,14 @@ describe('INPUT_FIELD_DEFINITION Int validate @constraint #max', () => {
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 2 } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 5 } } });
     expect(res).toMatchSnapshot();
@@ -103,14 +103,14 @@ describe('INPUT_FIELD_DEFINITION Int validate @constraint #exclusiveMin', () => 
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 4 } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 3 } } });
     expect(res).toMatchSnapshot();
@@ -135,14 +135,14 @@ describe('INPUT_FIELD_DEFINITION Int validate @constraint #exclusiveMax', () => 
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 2 } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 3 } } });
     expect(res).toMatchSnapshot();
@@ -167,14 +167,14 @@ describe('INPUT_FIELD_DEFINITION Int validate @constraint #multipleOf', () => {
   `;
 
   it('should pass', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 10 } } });
     expect(res).toMatchSnapshot();
   });
 
   it('should fail', async () => {
-    const { server } = constructTestServer(typeDefs);
+    const { server } = constructTestServer({ typeDefs });
     const { query } = createTestClient(server);
     const res = await query({ mutation: SET_BOOK, variables: { input: { title: 7 } } });
     expect(res).toMatchSnapshot();
@@ -195,7 +195,7 @@ describe('FIELD_DEFINITION Int validate @constraint #min', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 2 }, { title: 3 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -203,7 +203,7 @@ describe('FIELD_DEFINITION Int validate @constraint #min', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 1 }, { title: 2 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -223,7 +223,7 @@ describe('FIELD_DEFINITION Int validate @constraint #min0', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 1 }, { title: 2 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -231,7 +231,7 @@ describe('FIELD_DEFINITION Int validate @constraint #min0', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: -1 }, { title: 2 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -251,7 +251,7 @@ describe('FIELD_DEFINITION Int validate @constraint #max', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 1 }, { title: 2 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -259,7 +259,7 @@ describe('FIELD_DEFINITION Int validate @constraint #max', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 3 }, { title: 2 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -279,7 +279,7 @@ describe('FIELD_DEFINITION Int validate @constraint #max0', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 0 }, { title: -1 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -287,7 +287,7 @@ describe('FIELD_DEFINITION Int validate @constraint #max0', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 3 }, { title: -2 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -307,7 +307,7 @@ describe('FIELD_DEFINITION Int validate @constraint #exclusiveMin', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 3 }, { title: 4 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -315,7 +315,7 @@ describe('FIELD_DEFINITION Int validate @constraint #exclusiveMin', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 3 }, { title: 2 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -335,7 +335,7 @@ describe('FIELD_DEFINITION Int validate @constraint #exclusiveMin0', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 1 }, { title: 3 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -343,7 +343,7 @@ describe('FIELD_DEFINITION Int validate @constraint #exclusiveMin0', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 0 }, { title: 2 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -363,7 +363,7 @@ describe('FIELD_DEFINITION Int validate @constraint #exclusiveMax', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 0 }, { title: 1 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -371,7 +371,7 @@ describe('FIELD_DEFINITION Int validate @constraint #exclusiveMax', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 1 }, { title: 2 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -391,7 +391,7 @@ describe('FIELD_DEFINITION Int validate @constraint #exclusiveMax0', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: -1 }, { title: -2 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -399,7 +399,7 @@ describe('FIELD_DEFINITION Int validate @constraint #exclusiveMax0', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 0 }, { title: -2 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -419,7 +419,7 @@ describe('FIELD_DEFINITION Int validate @constraint #multipleOf', () => {
 
   it('should pass', async () => {
     const mockData = [{ title: 2 }, { title: 4 }, { title: 6 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()
@@ -427,7 +427,7 @@ describe('FIELD_DEFINITION Int validate @constraint #multipleOf', () => {
 
   it('should fail', async () => {
     const mockData = [{ title: 1 }, { title: 2 }, { title: 3 }]
-    const { server } = constructTestServer(typeDefs, resolvers(mockData))
+    const { server } = constructTestServer({ typeDefs, resolvers: resolvers(mockData) })
     const { query } = createTestClient(server)
     const res = await query({ query: GET_BOOK })
     expect(res).toMatchSnapshot()

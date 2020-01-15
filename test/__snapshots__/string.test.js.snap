@@ -1043,6 +1043,31 @@ Object {
 }
 `;
 
+exports[`INPUT_FIELD_DEFINITION String validate @constraint #maxLength should throw custom error 1`] = `
+Object {
+  "data": undefined,
+  "errors": Array [
+    Object {
+      "code": "ERR_GRAPHQL_CONSTRAINT_VALIDATION",
+      "context": Array [
+        Object {
+          "arg": "maxLength",
+          "value": 3,
+        },
+      ],
+      "fieldName": "title",
+      "message": "Must be no more than 3 characters in length",
+    },
+  ],
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
 exports[`INPUT_FIELD_DEFINITION String validate @constraint #minLength should fail 1`] = `
 Object {
   "data": undefined,
@@ -1064,6 +1089,31 @@ Object {
     "createBook": null,
   },
   "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`INPUT_FIELD_DEFINITION String validate @constraint #minLength should throw custom error 1`] = `
+Object {
+  "data": undefined,
+  "errors": Array [
+    Object {
+      "code": "ERR_GRAPHQL_CONSTRAINT_VALIDATION",
+      "context": Array [
+        Object {
+          "arg": "minLength",
+          "value": 3,
+        },
+      ],
+      "fieldName": "title",
+      "message": "Must be at least 3 characters in length",
+    },
+  ],
   "extensions": undefined,
   "http": Object {
     "headers": Headers {

@@ -165,10 +165,12 @@ const formatError = function (error) {
   if (error.originalError && error.originalError.code === 'ERR_GRAPHQL_CONSTRAINT_VALIDATION') {
     // return a custom object
   }
-
   return error
 }
 
-app.use('/graphql', bodyParser.json(), graphqlExpress({ schema, formatError }))
+const apollo = new ApolloServer({
+  schema: makeExecutableSchema({ typeDefs, schemaDirectives }),
+  formatError
+});
 
 ```
