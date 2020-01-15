@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "standard",
-    "test": "jest",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "test": "jest | coveralls"
   },
   "author": "Alexander Vu <alexander.vu.tuyet@gmail.com>",
   "license": "ISC",
