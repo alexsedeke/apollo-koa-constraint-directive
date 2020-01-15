@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "standard",
-    "test": "nyc --reporter=html --reporter=text mocha test/**/*.test.js",
+    "test": "jest",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Alexander Vu <alexander.vu.tuyet@gmail.com>",
@@ -32,16 +32,12 @@
   ],
   "devDependencies": {
     "apollo-server-testing": "^2.9.16",
-    "coveralls": "^3.0.9",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
     "jest": "^24.9.0",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
-    "mocha": "^7.0.0",
-    "nyc": "^15.0.0",
-    "standard": "^14.3.1",
-    "supertest": "^4.0.2"
+    "standard": "^14.3.1"
   },
   "dependencies": {
     "apollo-server-koa": "^2.9.16",
