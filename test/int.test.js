@@ -1,5 +1,5 @@
 const { createTestClient } = require('apollo-server-testing');
-const gql = require('graphql-tag');
+const { gql } = require('apollo-server-koa');
 const { constructTestServer } = require('./__setup');
 const SET_BOOK = gql`mutation createBook($input: BookInput) {
   createBook(input: $input) {
