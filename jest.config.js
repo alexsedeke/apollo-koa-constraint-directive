@@ -4,8 +4,6 @@ module.exports = {
   coverageReporters: [
     'text',
     'lcov',
-    'html',
-    'json',
   ],
   moduleFileExtensions: [
     'js',
