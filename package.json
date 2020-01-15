@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "standard",
     "test": "jest --coverage --coverageReporters=text-lcov | coveralls",
-    "coveralls": "coveralls"
+    "test:unit": "jest"
   },
   "author": "Alexander Vu <alexander.vu.tuyet@gmail.com>",
   "license": "ISC",
