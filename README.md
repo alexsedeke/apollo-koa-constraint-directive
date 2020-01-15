@@ -1,15 +1,18 @@
-# graphql-constraint-directive
+# apollo-koa-constraint-directive
+[![Build Status](https://travis-ci.org/alexanderVu/apollo-koa-constraint-directive.svg?branch=master)](https://travis-ci.org/alexanderVu/apollo-koa-constraint-directive)
+[![Coverage Status](https://coveralls.io/repos/github/alexanderVu/apollo-koa-constraint-directive/badge.svg?branch=master)](https://coveralls.io/github/alexanderVu/apollo-koa-constraint-directive?branch=master)
 
-[![Build Status](https://api.travis-ci.org/confuser/graphql-constraint-directive.svg?branch=master)](https://travis-ci.org/confuser/graphql-constraint-directive)
-[![Coverage Status](https://coveralls.io/repos/github/confuser/graphql-constraint-directive/badge.svg?branch=master)](https://coveralls.io/github/confuser/graphql-constraint-directive?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/confuser/graphql-constraint-directive/badge.svg?targetFile=package.json)](https://snyk.io/test/github/confuser/graphql-constraint-directive?targetFile=package.json)
 
-Allows using @constraint as a directive to validate input data. Inspired by [Constraints Directives RFC](https://github.com/APIs-guru/graphql-constraints-spec) and OpenAPI
+Allows using @constraint as a directive to validate input and output data. This module is for [*Apollo Graphql Koa middleware*](https://www.apollographql.com/docs/apollo-server/integrations/middleware/#gatsby-focus-wrapper), and support the latest [Apollo GraphQL](https://www.apollographql.com/) version 2.
+
+It is mainly based on the module from [graphql-constraint-directive](https://github.com/confuser/graphql-constraint-directive), which is for Apollo version 1 only.
+This module is an Inspired by [Constraints Directives RFC](https://github.com/APIs-guru/graphql-constraints-spec) and OpenAPI
 
 ## Install
 
 ```bash
-npm install graphql-constraint-directive
+npm install apollo-koa-constraint-directive
 ```
 
 ## Usage
