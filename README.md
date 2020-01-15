@@ -17,12 +17,16 @@ npm install apollo-koa-constraint-directive
 ## Usage
 
 ```js
-const ConstraintDirective = require('graphql-constraint-directive')
-const express = require('express')
-const bodyParser = require('body-parser')
-const { graphqlExpress } = require('apollo-server-express')
-const { makeExecutableSchema } = require('graphql-tools')
-const typeDefs = `
+const Koa = require('koa');
+const bodyParser = require('koa-bodyparser');
+const { ApolloServer, makeExecutableSchema, gql } = require('apollo-server-koa')
+const ConstraintDirective = require('apollo-koa-constraint-directive')
+
+const app = new Koa()
+const schemaDirectives = {
+  constraint: ConstraintDirective,
+};
+const typeDefs = gql`
   directive @constraint(
     # String constraints
     minLength: Int
@@ -53,13 +57,13 @@ const typeDefs = `
   input BookInput {
     title: String! @constraint(minLength: 5, format: "email")
   }`
-const schema = makeExecutableSchema({
-  typeDefs, schemaDirectives: { constraint: ConstraintDirective }
-})
-const app = express()
+const apollo = new ApolloServer({
+  schema: makeExecutableSchema({ typeDefs, schemaDirectives })
+});
 
-app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }))
-
+app.use(bodyParser())
+apollo.applyMiddleware({ app })
+app.listen(8000)
 ```
 
 ## API
