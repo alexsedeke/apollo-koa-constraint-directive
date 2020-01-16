@@ -5,14 +5,16 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "1",
+        "title": 1,
       },
       Object {
-        "title": "2",
+        "title": null,
       },
     ],
   },
-  "errors": undefined,
+  "errors": Array [
+    [GraphQLError: Must be less than 2],
+  ],
   "extensions": undefined,
   "http": Object {
     "headers": Headers {
@@ -27,10 +29,10 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "0",
+        "title": 0,
       },
       Object {
-        "title": "1",
+        "title": 1,
       },
     ],
   },
@@ -49,14 +51,16 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "0",
+        "title": null,
       },
       Object {
-        "title": "-2",
+        "title": -2,
       },
     ],
   },
-  "errors": undefined,
+  "errors": Array [
+    [GraphQLError: Must be less than 0],
+  ],
   "extensions": undefined,
   "http": Object {
     "headers": Headers {
@@ -71,10 +75,10 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "-1",
+        "title": -1,
       },
       Object {
-        "title": "-2",
+        "title": -2,
       },
     ],
   },
@@ -93,14 +97,16 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "3",
+        "title": 3,
       },
       Object {
-        "title": "2",
+        "title": null,
       },
     ],
   },
-  "errors": undefined,
+  "errors": Array [
+    [GraphQLError: Must be greater than 2],
+  ],
   "extensions": undefined,
   "http": Object {
     "headers": Headers {
@@ -115,10 +121,10 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "3",
+        "title": 3,
       },
       Object {
-        "title": "4",
+        "title": 4,
       },
     ],
   },
@@ -137,14 +143,16 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "0",
+        "title": null,
       },
       Object {
-        "title": "2",
+        "title": 2,
       },
     ],
   },
-  "errors": undefined,
+  "errors": Array [
+    [GraphQLError: Must be greater than 0],
+  ],
   "extensions": undefined,
   "http": Object {
     "headers": Headers {
@@ -159,10 +167,10 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "1",
+        "title": 1,
       },
       Object {
-        "title": "3",
+        "title": 3,
       },
     ],
   },
@@ -181,14 +189,16 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "3",
+        "title": null,
       },
       Object {
-        "title": "2",
+        "title": 2,
       },
     ],
   },
-  "errors": undefined,
+  "errors": Array [
+    [GraphQLError: Must be no greater than 2],
+  ],
   "extensions": undefined,
   "http": Object {
     "headers": Headers {
@@ -203,10 +213,10 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "1",
+        "title": 1,
       },
       Object {
-        "title": "2",
+        "title": 2,
       },
     ],
   },
@@ -225,14 +235,16 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "3",
+        "title": null,
       },
       Object {
-        "title": "-2",
+        "title": -2,
       },
     ],
   },
-  "errors": undefined,
+  "errors": Array [
+    [GraphQLError: Must be no greater than 0],
+  ],
   "extensions": undefined,
   "http": Object {
     "headers": Headers {
@@ -247,10 +259,10 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "0",
+        "title": 0,
       },
       Object {
-        "title": "-1",
+        "title": -1,
       },
     ],
   },
@@ -269,14 +281,17 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "1",
+        "title": null,
       },
       Object {
-        "title": "2",
+        "title": null,
       },
     ],
   },
-  "errors": undefined,
+  "errors": Array [
+    [GraphQLError: Must be at least 3],
+    [GraphQLError: Must be at least 3],
+  ],
   "extensions": undefined,
   "http": Object {
     "headers": Headers {
@@ -291,14 +306,16 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "2",
+        "title": null,
       },
       Object {
-        "title": "3",
+        "title": 3,
       },
     ],
   },
-  "errors": undefined,
+  "errors": Array [
+    [GraphQLError: Must be at least 3],
+  ],
   "extensions": undefined,
   "http": Object {
     "headers": Headers {
@@ -313,14 +330,16 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "-1",
+        "title": null,
       },
       Object {
-        "title": "2",
+        "title": 2,
       },
     ],
   },
-  "errors": undefined,
+  "errors": Array [
+    [GraphQLError: Must be at least 0],
+  ],
   "extensions": undefined,
   "http": Object {
     "headers": Headers {
@@ -335,10 +354,10 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "1",
+        "title": 1,
       },
       Object {
-        "title": "2",
+        "title": 2,
       },
     ],
   },
@@ -357,17 +376,20 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "1",
+        "title": null,
       },
       Object {
-        "title": "2",
+        "title": 2,
       },
       Object {
-        "title": "3",
+        "title": null,
       },
     ],
   },
-  "errors": undefined,
+  "errors": Array [
+    [GraphQLError: Must be a multiple of 2],
+    [GraphQLError: Must be a multiple of 2],
+  ],
   "extensions": undefined,
   "http": Object {
     "headers": Headers {
@@ -382,13 +404,13 @@ Object {
   "data": Object {
     "books": Array [
       Object {
-        "title": "2",
+        "title": 2,
       },
       Object {
-        "title": "4",
+        "title": 4,
       },
       Object {
-        "title": "6",
+        "title": 6,
       },
     ],
   },

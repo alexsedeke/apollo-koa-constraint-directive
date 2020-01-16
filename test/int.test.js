@@ -189,7 +189,7 @@ describe('FIELD_DEFINITION Int validate @constraint #min', () => {
       books: [Book]
     }
     type Book {
-      title: String @constraint(min: 3)
+      title: Int @constraint(min: 3)
     }
   `;
 
@@ -217,7 +217,7 @@ describe('FIELD_DEFINITION Int validate @constraint #min0', () => {
       books: [Book]
     }
     type Book {
-      title: String @constraint(min: 0)
+      title: Int @constraint(min: 0)
     }
   `;
 
@@ -245,7 +245,7 @@ describe('FIELD_DEFINITION Int validate @constraint #max', () => {
       books: [Book]
     }
     type Book {
-      title: String @constraint(max: 2)
+      title: Int @constraint(max: 2)
     }
   `;
 
@@ -273,7 +273,7 @@ describe('FIELD_DEFINITION Int validate @constraint #max0', () => {
       books: [Book]
     }
     type Book {
-      title: String @constraint(max: 0)
+      title: Int @constraint(max: 0)
     }
   `;
 
@@ -301,7 +301,7 @@ describe('FIELD_DEFINITION Int validate @constraint #exclusiveMin', () => {
       books: [Book]
     }
     type Book {
-      title: String @constraint(exclusiveMin: 2)
+      title: Int @constraint(exclusiveMin: 2)
     }
   `;
 
@@ -329,7 +329,7 @@ describe('FIELD_DEFINITION Int validate @constraint #exclusiveMin0', () => {
       books: [Book]
     }
     type Book {
-      title: String @constraint(exclusiveMin: 0)
+      title: Int @constraint(exclusiveMin: 0)
     }
   `;
 
@@ -357,7 +357,7 @@ describe('FIELD_DEFINITION Int validate @constraint #exclusiveMax', () => {
       books: [Book]
     }
     type Book {
-      title: String @constraint(exclusiveMax: 2)
+      title: Int @constraint(exclusiveMax: 2)
     }
   `;
 
@@ -385,7 +385,7 @@ describe('FIELD_DEFINITION Int validate @constraint #exclusiveMax0', () => {
       books: [Book]
     }
     type Book {
-      title: String @constraint(exclusiveMax: 0)
+      title: Int @constraint(exclusiveMax: 0)
     }
   `;
 
@@ -413,7 +413,7 @@ describe('FIELD_DEFINITION Int validate @constraint #multipleOf', () => {
       books: [Book]
     }
     type Book {
-      title: String @constraint(multipleOf: 2)
+      title: Int @constraint(multipleOf: 2)
     }
   `;
 
