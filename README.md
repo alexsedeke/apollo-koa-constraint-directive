@@ -36,6 +36,7 @@ const typeDefs = gql`
     notContains: String
     pattern: String
     format: String
+    passwordScore: String
 
     # Number constraints
     min: Int
