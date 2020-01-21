@@ -1153,6 +1153,51 @@ Object {
 }
 `;
 
+exports[`INPUT_FIELD_DEFINITION String validate @constraint #passwordScore should fail 1`] = `
+Object {
+  "data": undefined,
+  "errors": Array [
+    [GraphQLError: Variable "$input" got invalid value "got 💩" at "input.title"; Expected type ConstraintString. GraphQLError is not defined],
+  ],
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`INPUT_FIELD_DEFINITION String validate @constraint #passwordScore should pass equal 1`] = `
+Object {
+  "data": undefined,
+  "errors": Array [
+    [GraphQLError: Variable "$input" got invalid value "Tr0ub4dour&3|!" at "input.title"; Expected type ConstraintString. Password is not strong enough undefined],
+  ],
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`INPUT_FIELD_DEFINITION String validate @constraint #passwordScore should pass higher 1`] = `
+Object {
+  "data": undefined,
+  "errors": Array [
+    [GraphQLError: Variable "$input" got invalid value "Tr0ub4dour&3|!dseě" at "input.title"; Expected type ConstraintString. Password is not strong enough undefined],
+  ],
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
 exports[`INPUT_FIELD_DEFINITION String validate @constraint #pattern should fail 1`] = `
 Object {
   "data": undefined,

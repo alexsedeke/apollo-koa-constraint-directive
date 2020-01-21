@@ -1,6 +1,7 @@
 const { GraphQLScalarType } = require('graphql')
 const { contains, isLength } = require('validator')
 const formats = require('./formats')
+const password = require('./password')
 const ValidationError = require('../lib/error')
 
 module.exports = class ConstraintStringType extends GraphQLScalarType {
@@ -84,5 +85,11 @@ function validate (fieldName, args, value) {
         e.message,
         [{ arg: 'format', value: args.format }])
     }
+  }
+
+  if (args.passwordScore && password(value, args.passwordScore)) {
+    throw new ValidationError(fieldName,
+      `Password is not strong enough ${args.password}`,
+      [{ arg: 'password', value: args.password }])
   }
 }

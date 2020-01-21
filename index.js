@@ -32,6 +32,7 @@ class ConstraintDirective extends SchemaDirectiveVisitor {
         notContains: { type: GraphQLString },
         pattern: { type: GraphQLString },
         format: { type: GraphQLString },
+        passwordScore: { type: GraphQLInt },
 
         /* Numbers (Int/Float) */
         min: { type: GraphQLFloat },

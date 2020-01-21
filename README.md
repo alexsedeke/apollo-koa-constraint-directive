@@ -121,6 +121,11 @@ Supported formats:
 - uri
 - uuid
 
+#### password strength
+
+```@constraint(password: 3)```
+Ensure password value has estimated strength. [zxcvbn](https://github.com/dropbox/zxcvbn) is used under the hood. Possible strength values are between 1 and 5. Heigher is better
+
 ### Int/Float
 
 #### min

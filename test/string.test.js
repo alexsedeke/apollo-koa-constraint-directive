@@ -549,6 +549,45 @@ describe('INPUT_FIELD_DEFINITION String validate @constraint #format #unknowm', 
   });
 });
 
+describe('INPUT_FIELD_DEFINITION String validate @constraint #passwordScore', () => {
+  const typeDefs = gql`
+    directive @constraint(passwordScore: Int) on INPUT_FIELD_DEFINITION
+    type Query {
+      books: [Book]
+    }
+    type Book {
+      title: String
+    }
+    type Mutation {
+      createBook(input: BookInput): Book
+    }
+    input BookInput {
+      title: String! @constraint(passwordScore: 3)
+    }
+  `;
+
+  it('should pass equal', async () => {
+    const { server } = constructTestServer({ typeDefs });
+    const { query } = createTestClient(server);
+    const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'Tr0ub4dour&3|!' } } });
+    expect(res).toMatchSnapshot();
+  });
+
+  it('should pass higher', async () => {
+    const { server } = constructTestServer({ typeDefs });
+    const { query } = createTestClient(server);
+    const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'Tr0ub4dour&3|!dseě' } } });
+    expect(res).toMatchSnapshot();
+  });
+
+  it('should fail', async () => {
+    const { server } = constructTestServer({ typeDefs });
+    const { query } = createTestClient(server);
+    const res = await query({ mutation: SET_BOOK, variables: { input: { title: 'got 💩' } } });
+    expect(res).toMatchSnapshot();
+  });
+});
+
 // FIELD_DEFINITION
 describe('FIELD_DEFINITION String validate @constraint #minLength', () => {
   const typeDefs = gql`
