@@ -1,8 +1,9 @@
 const zxcvbn = require('zxcvbn')
+const { GraphQLError } = require('graphql/error')
 
 module.exports = (value, strengthEstimated) => {
   const result = zxcvbn(value);
-  if (result 
+  if (result
     && typeof result.score === 'number' 
     && result.score >= strengthEstimated) return true
 
