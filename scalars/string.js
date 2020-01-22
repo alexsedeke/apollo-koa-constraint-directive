@@ -90,6 +90,6 @@ function validate (fieldName, args, value) {
   if (args.passwordScore && !password(value, args.passwordScore)) {
     throw new ValidationError(fieldName,
       `Password for ${fieldName} is not strong enough to reach a score of ${args.passwordScore}`,
-      [{ arg: 'password', value: args.password }])
+      [{ arg: 'password', value: args.passwordScore }])
   }
 }
