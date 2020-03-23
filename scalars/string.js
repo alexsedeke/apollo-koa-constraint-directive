@@ -3,11 +3,12 @@ const { contains, isLength } = require('validator')
 const formats = require('./formats')
 const password = require('./password')
 const ValidationError = require('../lib/error')
+const capitalize = require('capitalize')
 
 module.exports = class ConstraintStringType extends GraphQLScalarType {
   constructor (fieldName, type, args) {
     super({
-      name: 'ConstraintString',
+      name: `Constraint${capitalize(fieldName)}`,
       serialize (value) {
         value = type.serialize(value)
         validate(fieldName, args, value)

@@ -13,6 +13,7 @@ const {
 } = require('apollo-server-koa')
 const ConstraintStringType = require('./scalars/string')
 const ConstraintNumberType = require('./scalars/number')
+const capitalize = require('capitalize')
 
 class ConstraintDirective extends SchemaDirectiveVisitor {
   static getDirectiveDeclaration (directiveName) {
@@ -74,8 +75,12 @@ class ConstraintDirective extends SchemaDirectiveVisitor {
       type = type.ofType
     }
 
-    if (isNamedType(type) && !typeMap[type.name]) {
-      typeMap[type.name] = type
+    if (isNamedType(type)) {
+      const typeName = capitalize(type.name)
+
+      if (!typeMap[typeName]) {
+        typeMap[typeName] = type
+      }
     }
   }
 }

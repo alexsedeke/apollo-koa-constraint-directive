@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "apollo-server-koa": "^2.11.0",
+    "capitalize": "^2.0.3",
     "validator": "^13.0.0",
     "zxcvbn": "^4.4.2"
   },
