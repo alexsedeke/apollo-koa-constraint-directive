@@ -76,7 +76,7 @@ class ConstraintDirective extends SchemaDirectiveVisitor {
     }
 
     if (isNamedType(type)) {
-      const typeName = capitalize(type.name)
+      const typeName = capitalize(type.name, true)
 
       if (!typeMap[typeName]) {
         typeMap[typeName] = type

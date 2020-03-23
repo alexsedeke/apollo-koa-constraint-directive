@@ -5,7 +5,7 @@ const capitalize = require('capitalize')
 module.exports = class ConstraintNumberType extends GraphQLScalarType {
   constructor (fieldName, type, args) {
     super({
-      name: `Constraint${capitalize(fieldName)}`,
+      name: `Constraint${capitalize(fieldName, true)}`,
       serialize (value) {
         value = type.serialize(value)
         validate(fieldName, args, value)
